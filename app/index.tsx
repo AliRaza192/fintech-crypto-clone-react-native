@@ -37,7 +37,7 @@ const Page = () => {
         </Link>
 
         <Link
-          href={'/sign-up'}
+          href={'/signup'}
           asChild
           style={[defaultStyles.pillButton, { flex: 1, backgroundColor: '#fff' }]}
         >
