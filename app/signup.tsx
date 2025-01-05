@@ -3,13 +3,33 @@ import React, { useState } from 'react'
 import { defaultStyles } from '@/constants/Styles'
 // import { TextInput } from 'react-native-gesture-handler'
 import Colors from '@/constants/Colors'
-import { Link } from 'expo-router'
+import { Link, useRouter } from 'expo-router'
+import { useSignUp } from '@clerk/clerk-expo'
 
 const Page = () => {
 
   const [countryCode, setCountryCode] = useState("+92")
   const [phoneNumber, setPhoneNumber] = useState("")
-  const onSignup = async () => { }
+  const router = useRouter()
+  const { signUp } = useSignUp()
+  const onSignup = async () => {
+
+    const fullPhoneNumber = `${countryCode}${phoneNumber}`
+
+    try {
+      await signUp!.create({
+        phoneNumber: fullPhoneNumber
+      })
+
+      signUp!.preparePhoneNumberVerification()
+
+      router.push({ pathname: './verify/[phone]', params: { phone: fullPhoneNumber } })
+    } catch (error) {
+      console.log('Error Signing up:', error);
+
+    }
+
+  }
 
   return (
     <KeyboardAvoidingView
